@@ -3,6 +3,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import java.lang.Math.*
 
 /**
  * Пример
@@ -18,7 +19,13 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean {
+    val x1: Int = number / 1000
+    val x2: Int = number / 100 % 10
+    val x3: Int = number / 10 % 10
+    val x4: Int = number % 10
+    return x1 + x2 == x3 + x4
+}
 
 /**
  * Простая
@@ -27,7 +34,9 @@ fun isNumberHappy(number: Int): Boolean = TODO()
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = (
+        x1 == x2 || y1 == y2 || x1 - y1 == x2 - y2 || y1 + x1 == x2 + y2
+        )
 
 
 /**
@@ -36,19 +45,29 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int = TODO()
+fun daysInMonth(month: Int, year: Int): Int {
+    val answer: Int
+    val days: Int = 28 + (month + month / 8) % 2 + 2 % month + (1 / month) * 2
+    if (year != 1900 && year % 4 == 0 && month == 2)
+        answer = 29
+    else answer = days
+    return answer
+}
 
 /**
  * Средняя
  *
  * Проверить, лежит ли окружность с центром в (x1, y1) и радиусом r1 целиком внутри
  * окружности с центром в (x2, y2) и радиусом r2.
- * Вернуть true, если утверждение верно
+ * Вернуть true, если утверждение верноR1*R1>(a1-a2)*(a1-a2)+(b1-b2)*(b1-b2)+R2*R2
  */
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = TODO()
+): Boolean {
+    val dist: Double = sqrt(pow(x2 - x1, 2.0) + pow(y2 - y1, 2.0))
+    return r2 >= dist + r1
+}
 
 /**
  * Средняя
@@ -59,4 +78,13 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    val length = min(min(a, b), c)
+    val width = max(max(a, b), c)
+    val height = a + b + c - length - width
+
+    val holeLength = min(r, s)
+    val holeHigth = max(r, s)
+
+    return length <= holeLength && height <= holeHigth
+}
